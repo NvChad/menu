@@ -3,8 +3,8 @@ local api = vim.api
 local state = require "menu.state"
 local layout = require "menu.layout"
 local ns = api.nvim_create_namespace "NvMenu"
-local extmarks = require "volt"
-local extmarks_events = require "volt.events"
+local volt = require "volt"
+local volt_events = require "volt.events"
 
 M.open = function(items, opts)
   opts = opts or {}
@@ -17,6 +17,7 @@ M.open = function(items, opts)
 
   local buf = api.nvim_create_buf(false, true)
   state.bufs[buf] = { items = items, item_gap = opts.item_gap or 10 }
+  table.insert(state.bufids, buf)
 
   local h = #items
   local bufv = state.bufs[buf]
@@ -46,13 +47,13 @@ M.open = function(items, opts)
     else
       win_opts.win = api.nvim_get_current_win()
       win_opts.col = api.nvim_win_get_width(win_opts.win) + 2
-      win_opts.row = api.nvim_win_get_cursor(win_opts.win)[1] - 2
+      win_opts.row = api.nvim_win_get_cursor(win_opts.win)[1] - 1
     end
   end
 
   local win = api.nvim_open_win(buf, not config.mouse, win_opts)
 
-  extmarks.gen_data {
+  volt.gen_data {
     { buf = buf, ns = ns, layout = layout },
   }
 
@@ -60,16 +61,20 @@ M.open = function(items, opts)
   api.nvim_set_hl(ns, "Normal", { link = "ExBlack2Bg" })
   api.nvim_set_hl(ns, "FloatBorder", { link = "ExBlack2Border" })
 
-  extmarks.run(buf, { h = h, w = bufv.w })
-  extmarks_events.add(buf)
+  volt.run(buf, { h = h, w = bufv.w })
+  volt_events.add(buf)
 
-  extmarks.mappings {
+  volt.mappings {
     bufs = vim.tbl_keys(state.bufs),
     after_close = function()
       state.bufs = {}
       state.bufids = {}
     end,
   }
+
+  if not config.mouse then
+    require "menu.mappings"()
+  end
 
   -- clear menu if clicked outside
   if not state.autocmd and config.mouse then
@@ -81,8 +86,9 @@ M.open = function(items, opts)
         if vim.bo[bufid].ft ~= "NvMenu" then
           require("volt.utils").close {
             bufs = vim.tbl_keys(state.bufs),
-            close_func = function(id)
-              state.bufs[id] = nil
+            after_close = function()
+              state.bufs = {}
+              state.bufids = {}
             end,
           }
           api.nvim_del_autocmd(args.id)
