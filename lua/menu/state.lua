@@ -1,5 +1,5 @@
 local M = {
-  bufs = {}
+  bufs = {},
 }
 
 return M

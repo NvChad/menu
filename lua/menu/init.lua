@@ -9,6 +9,12 @@ local extmarks_events = require "volt.events"
 M.open = function(items, opts)
   opts = opts or {}
 
+  if not state.config then
+    state.config = opts
+  end
+
+  local config = state.config
+
   local buf = api.nvim_create_buf(false, true)
   state.bufs[buf] = { items = items, item_gap = opts.item_gap or 10 }
 
@@ -20,7 +26,7 @@ M.open = function(items, opts)
   vim.bo[buf].filetype = "NvMenu"
 
   local win_opts = {
-    relative = "mouse",
+    relative = config.mouse and "mouse" or "cursor",
     width = bufv.w,
     height = h,
     row = 1,
@@ -32,14 +38,19 @@ M.open = function(items, opts)
   if opts.nested then
     win_opts.relative = "win"
 
-    local pos = vim.fn.getmousepos()
-
-    win_opts.win = pos.winid
-    win_opts.col = api.nvim_win_get_width(pos.winid) + 2
-    win_opts.row = pos.winrow - 2
+    if config.mouse then
+      local pos = vim.fn.getmousepos()
+      win_opts.win = pos.winid
+      win_opts.col = api.nvim_win_get_width(pos.winid) + 2
+      win_opts.row = pos.winrow - 2
+    else
+      win_opts.win = api.nvim_get_current_win()
+      win_opts.col = api.nvim_win_get_width(win_opts.win) + 2
+      win_opts.row = api.nvim_win_get_cursor(win_opts.win)[1] - 2
+    end
   end
 
-  local win = api.nvim_open_win(buf, true, win_opts)
+  local win = api.nvim_open_win(buf, not config.mouse, win_opts)
 
   extmarks.gen_data {
     { buf = buf, ns = ns, layout = layout },
@@ -54,13 +65,14 @@ M.open = function(items, opts)
 
   extmarks.mappings {
     bufs = vim.tbl_keys(state.bufs),
-    close_func = function(bufid)
-      state.bufs[bufid] = nil
+    after_close = function()
+      state.bufs = {}
+      state.bufids = {}
     end,
   }
 
   -- clear menu if clicked outside
-  if not state.autocmd then
+  if not state.autocmd and config.mouse then
     api.nvim_create_autocmd("WinEnter", {
       callback = function(args)
         local mousepos = vim.fn.getmousepos()

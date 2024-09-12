@@ -26,7 +26,8 @@ local format_title = function(buf, name, rtxt, hl, actions)
 end
 
 local get_right_bufs = function()
-  local cur_win = vim.fn.getmousepos().winid
+  local config = state.config
+  local cur_win = (config.mouse and vim.fn.getmousepos().winid) or api.nvim_get_current_win()
   local wins = api.nvim_list_wins()
 
   local nvmenu_bufs = {}
@@ -54,6 +55,7 @@ local function toggle_nested_menu(items)
       end,
     }
   else
+    print('duhh..')
     require("menu").open(items, { nested = true })
   end
 end
