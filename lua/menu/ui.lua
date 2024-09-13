@@ -1,4 +1,3 @@
-local M = {}
 local api = vim.api
 local strw = vim.fn.strwidth
 local state = require "menu.state"
@@ -46,7 +45,7 @@ local function toggle_nested_menu(items)
   end
 end
 
-M.items = function(buf)
+return function(buf)
   local lines = {}
   local bufv = state.bufs[buf]
 
@@ -69,11 +68,19 @@ M.items = function(buf)
           return
         end
 
-        api.nvim_buf_call(buf, function()
-          api.nvim_feedkeys("q", "x", false)
+        require("volt").close(buf)
+
+        local _, err = pcall(function()
+          if type(item.cmd) == "string" then
+            vim.cmd(item.cmd)
+          else
+            item.cmd()
+          end
         end)
 
-        item.cmd()
+        if(err) then
+          vim.notify(err, vim.log.levels.ERROR)
+        end
       end,
     }
 
@@ -83,5 +90,3 @@ M.items = function(buf)
 
   return lines
 end
-
-return M
