@@ -73,7 +73,8 @@ M.open = function(items, opts)
   }
 
   if not config.mouse then
-    require "menu.mappings"()
+    require("menu.mappings").general()
+    require("menu.mappings").actions(items, buf)
   end
 
   -- clear menu if clicked outside

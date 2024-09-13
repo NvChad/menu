@@ -1,8 +1,6 @@
-local ui = require "menu.ui"
-
 return {
   {
-    lines = ui.items,
+    lines = require "menu.ui",
     name = "items",
   },
 }
