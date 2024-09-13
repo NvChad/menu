@@ -7,6 +7,8 @@ local volt = require "volt"
 local volt_events = require "volt.events"
 
 M.open = function(items, opts)
+  items = type(items) == "table" and items or require("menus." .. items)
+
   opts = opts or {}
 
   if not state.config then
