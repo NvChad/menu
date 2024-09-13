@@ -7,6 +7,7 @@ local volt = require "volt"
 local volt_events = require "volt.events"
 
 M.open = function(items, opts)
+  state.old_buf = state.old_buf or api.nvim_get_current_buf()
   items = type(items) == "table" and items or require("menus." .. items)
 
   opts = opts or {}
@@ -18,7 +19,7 @@ M.open = function(items, opts)
   local config = state.config
 
   local buf = api.nvim_create_buf(false, true)
-  state.bufs[buf] = { items = items, item_gap = opts.item_gap or 10 }
+  state.bufs[buf] = { items = items, item_gap = opts.item_gap or 5 }
   table.insert(state.bufids, buf)
 
   local h = #items
@@ -60,8 +61,12 @@ M.open = function(items, opts)
   }
 
   api.nvim_win_set_hl_ns(win, ns)
-  api.nvim_set_hl(ns, "Normal", { link = "ExBlack2Bg" })
-  api.nvim_set_hl(ns, "FloatBorder", { link = "ExBlack2Border" })
+
+  if config.border then
+    vim.wo[win].winhl = "Normal:Normal,FloatBorder:LineNr"
+  else
+    vim.wo[win].winhl = "Normal:ExBlack2Bg,FloatBorder:ExBlack2Border"
+  end
 
   volt.run(buf, { h = h, w = bufv.w })
   volt_events.add(buf)
@@ -71,6 +76,7 @@ M.open = function(items, opts)
     after_close = function()
       state.bufs = {}
       state.bufids = {}
+      state.config = nil
     end,
   }
 
@@ -92,6 +98,7 @@ M.open = function(items, opts)
             after_close = function()
               state.bufs = {}
               state.bufids = {}
+              state.config = nil
             end,
           }
           api.nvim_del_autocmd(args.id)

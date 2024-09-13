@@ -1,23 +1,26 @@
-local api = vim.api
 local strw = vim.fn.strwidth
 local state = require "menu.state"
 local utils = require "menu.utils"
 
-local format_title = function(buf, name, rtxt, hl, actions)
+local format_title = function(buf, name, rtxt, hl, actions, title)
   local bufv = state.bufs[buf]
-  local line = {}
 
   if name == " separator" then
-    table.insert(line, { " " .. string.rep("─", bufv.w - 2), "LineNr" })
-    return line
+    return { { " " .. string.rep("─", bufv.w - 2), hl or "LineNr" } }
   end
 
-  table.insert(line, { name, hl or "ExLightGrey", actions })
+  local line = {}
+  local name_w = strw(name)
 
-  local gap = bufv.w - (strw(name) + strw(rtxt))
-  table.insert(line, { string.rep(" ", gap), hl, actions })
-
-  if rtxt then
+  -- centered title
+  if title then
+    table.insert(line, { string.rep(" ", ((bufv.w - name_w) / 2)), hl or "LineNr" })
+    table.insert(line, { name, hl })
+  else
+    -- add gap between title and rtxt
+    table.insert(line, { name, hl or "ExLightGrey", actions })
+    local gap = bufv.w - (name_w + strw(rtxt))
+    table.insert(line, { string.rep(" ", gap), hl, actions })
     table.insert(line, { rtxt, hl or "LineNr", actions })
   end
 
@@ -50,9 +53,9 @@ return function(buf)
   local bufv = state.bufs[buf]
 
   for i, item in ipairs(bufv.items or {}) do
-    local hover_id = i .. "menu"
+    local hover_id = i .. "menu" .. buf
     local hovered = vim.g.nvmark_hovered == hover_id
-    local hl = hovered and "PmenuSel" or nil
+    local hl = hovered and "ExBlack3Bg" or item.hl
 
     local nested_menu = item.items
 
@@ -78,13 +81,13 @@ return function(buf)
           end
         end)
 
-        if(err) then
+        if err then
           vim.notify(err, vim.log.levels.ERROR)
         end
       end,
     }
 
-    local mark = format_title(buf, " " .. item.name, (item.rtxt or "") .. " ", hl, actions)
+    local mark = format_title(buf, " " .. item.name, (item.rtxt or "") .. " ", hl, actions, item.title)
     table.insert(lines, mark)
   end
 
