@@ -5,9 +5,13 @@ local layout = require "menu.layout"
 local ns = api.nvim_create_namespace "NvMenu"
 local volt = require "volt"
 local volt_events = require "volt.events"
+local mappings = require "menu.mappings"
 
 M.open = function(items, opts)
-  state.old_buf = state.old_buf or api.nvim_get_current_buf()
+  if not state.old_data then
+    state.old_data = { buf = api.nvim_get_current_buf(), cursor = api.nvim_win_get_cursor(0) }
+  end
+
   items = type(items) == "table" and items or require("menus." .. items)
 
   opts = opts or {}
@@ -71,40 +75,24 @@ M.open = function(items, opts)
   volt.run(buf, { h = h, w = bufv.w })
   volt_events.add(buf)
 
-  volt.mappings {
-    bufs = vim.tbl_keys(state.bufs),
-    after_close = function()
-      state.bufs = {}
-      state.bufids = {}
-      state.config = nil
-    end,
-  }
+  local close_post = function()
+    state.bufs = {}
+    state.config = nil
+    api.nvim_win_set_cursor(0, state.old_data.cursor)
 
-  if not config.mouse then
-    require("menu.mappings").general()
-    require("menu.mappings").actions(items, buf)
+    vim.schedule(function()
+      state.old_data = nil
+      state.bufids = {}
+    end)
   end
 
-  -- clear menu if clicked outside
-  if not state.autocmd and config.mouse then
-    api.nvim_create_autocmd("WinEnter", {
-      callback = function(args)
-        local mousepos = vim.fn.getmousepos()
-        local bufid = api.nvim_win_get_buf(mousepos.winid)
+  volt.mappings { bufs = vim.tbl_keys(state.bufs), after_close = close_post }
 
-        if vim.bo[bufid].ft ~= "NvMenu" then
-          require("volt.utils").close {
-            bufs = vim.tbl_keys(state.bufs),
-            after_close = function()
-              state.bufs = {}
-              state.bufids = {}
-              state.config = nil
-            end,
-          }
-          api.nvim_del_autocmd(args.id)
-        end
-      end,
-    })
+  if not config.mouse then
+    mappings.nav_win()
+    mappings.actions(items, buf)
+  else
+    mappings.auto_close(close_post)
   end
 end
 

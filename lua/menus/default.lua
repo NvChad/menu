@@ -24,9 +24,7 @@ return {
 
   {
     name = "  Lsp Actions",
-    cmd = vim.lsp.buf.code_action,
-    rtxt = "<leader>ca",
-    hl = "Exred",
+    hl = "Exblue",
     items = "lsp",
   },
 
@@ -59,7 +57,7 @@ return {
   {
     name = "  Open in terminal",
     cmd = function()
-      local old_buf = require("menu.state").old_buf
+      local old_buf = require("menu.state").old_data.buf
       local old_bufname = vim.api.nvim_buf_get_name(old_buf)
       local old_buf_dir = vim.fn.fnamemodify(old_bufname, ":h")
 
