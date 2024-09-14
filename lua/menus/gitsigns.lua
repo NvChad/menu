@@ -11,33 +11,33 @@ return {
   {
     name = "Stage Hunk",
     cmd = "Gitsigns stage_hunk",
-    rtxt = "<leader>hs",
+    rtxt = "sh",
   },
   {
     name = "Reset Hunk",
     cmd = "Gitsigns reset_hunk",
-    rtxt = "<leader>hr",
+    rtxt = "rh",
   },
 
   {
     name = "Stage Buffer",
     cmd = "Gitsigns stage_buffer",
-    rtxt = "<leader>hS",
+    rtxt = "sb",
   },
   {
     name = "Undo Stage Hunk",
     cmd = "Gitsigns undo_stage_hunk",
-    rtxt = "<leader>hu",
+    rtxt = "us",
   },
   {
     name = "Reset Buffer",
     cmd = "Gitsigns reset_buffer",
-    rtxt = "<leader>hR",
+    rtxt = "rb",
   },
   {
     name = "Preview Hunk",
     cmd = "Gitsigns preview_hunk",
-    rtxt = "<leader>hp",
+    rtxt = "hp",
   },
 
   { name = "separator" },
@@ -45,12 +45,12 @@ return {
   {
     name = "Blame Line",
     cmd = 'lua require"gitsigns".blame_line{full=true}',
-    rtxt = "<leader>hb",
+    rtxt = "b",
   },
   {
     name = "Toggle Current Line Blame",
     cmd = "Gitsigns toggle_current_line_blame",
-    rtxt = "<leader>tb",
+    rtxt = "tb",
   },
 
   { name = "separator" },
@@ -58,16 +58,16 @@ return {
   {
     name = "Diff This",
     cmd = "Gitsigns diffthis",
-    rtxt = "<leader>hd",
+    rtxt = "dt",
   },
   {
     name = "Diff Last Commit",
     cmd = 'lua require"gitsigns".diffthis("~")',
-    rtxt = "<leader>hD",
+    rtxt = "dc",
   },
   {
     name = "Toggle Deleted",
     cmd = "Gitsigns toggle_deleted",
-    rtxt = "<leader>td",
+    rtxt = "td",
   },
 }
