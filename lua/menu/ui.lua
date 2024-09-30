@@ -74,11 +74,13 @@ return function(buf)
         require("volt").close(buf)
 
         local _, err = pcall(function()
-          if type(item.cmd) == "string" then
-            vim.cmd(item.cmd)
-          else
-            item.cmd()
-          end
+          vim.schedule(function()
+            if type(item.cmd) == "string" then
+              vim.cmd(item.cmd)
+            else
+              item.cmd()
+            end
+          end)
         end)
 
         if err then

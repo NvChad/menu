@@ -1,14 +1,6 @@
 return {
 
   {
-    name = "  Gitsigns",
-    hl = "Exblue",
-    title=true,
-  },
-
-  { name = "separator", hl='Exblue' },
-
-  {
     name = "Stage Hunk",
     cmd = "Gitsigns stage_hunk",
     rtxt = "sh",

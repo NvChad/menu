@@ -56,6 +56,7 @@ return {
 
   {
     name = "  Open in terminal",
+     hl="ExRed",
     cmd = function()
       local old_buf = require("menu.state").old_data.buf
       local old_bufname = vim.api.nvim_buf_get_name(old_buf)
@@ -65,4 +66,13 @@ return {
       require("nvchad.term").new { cmd = cmd, pos = "sp" }
     end,
   },
+
+  { name = "separator" },
+
+  {
+    name='  Color Picker',
+    cmd = function()
+      require("minty.huefy").open()
+    end
+  }
 }
