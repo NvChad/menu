@@ -9,7 +9,11 @@ local mappings = require "menu.mappings"
 
 M.open = function(items, opts)
   if not state.old_data then
-    state.old_data = { buf = api.nvim_get_current_buf(), cursor = api.nvim_win_get_cursor(0) }
+    state.old_data = {
+      buf = api.nvim_get_current_buf(),
+      win = api.nvim_get_current_win(),
+      cursor = api.nvim_win_get_cursor(0),
+    }
   end
 
   items = type(items) == "table" and items or require("menus." .. items)
@@ -78,7 +82,7 @@ M.open = function(items, opts)
   local close_post = function()
     state.bufs = {}
     state.config = nil
-    api.nvim_win_set_cursor(0, state.old_data.cursor)
+    api.nvim_win_set_cursor(state.old_data.win, state.old_data.cursor)
 
     vim.schedule(function()
       state.old_data = nil
