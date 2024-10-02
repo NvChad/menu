@@ -47,6 +47,7 @@ M.open = function(items, opts)
     col = 0,
     border = "single",
     style = "minimal",
+    zindex = 100
   }
 
   if opts.nested then
