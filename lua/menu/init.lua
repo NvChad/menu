@@ -10,7 +10,7 @@ local mappings = require "menu.mappings"
 M.open = function(items, opts)
   local cur_buf = api.nvim_get_current_buf()
 
-  if vim.bo[cur_buf].buflisted then
+  if vim.bo[cur_buf].ft ~= "NvMenu" then
     state.old_data = {
       buf = api.nvim_get_current_buf(),
       win = api.nvim_get_current_win(),
