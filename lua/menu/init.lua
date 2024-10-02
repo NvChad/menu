@@ -8,7 +8,9 @@ local volt_events = require "volt.events"
 local mappings = require "menu.mappings"
 
 M.open = function(items, opts)
-  if not state.old_data then
+  local cur_buf = api.nvim_get_current_buf()
+
+  if vim.bo[cur_buf].buflisted then
     state.old_data = {
       buf = api.nvim_get_current_buf(),
       win = api.nvim_get_current_win(),
@@ -85,7 +87,6 @@ M.open = function(items, opts)
     api.nvim_win_set_cursor(state.old_data.win, state.old_data.cursor)
 
     vim.schedule(function()
-      state.old_data = nil
       state.bufids = {}
     end)
   end

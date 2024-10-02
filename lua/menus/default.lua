@@ -56,23 +56,30 @@ return {
 
   {
     name = "  Open in terminal",
-     hl="ExRed",
+    hl = "ExRed",
     cmd = function()
       local old_buf = require("menu.state").old_data.buf
       local old_bufname = vim.api.nvim_buf_get_name(old_buf)
       local old_buf_dir = vim.fn.fnamemodify(old_bufname, ":h")
 
       local cmd = "cd " .. old_buf_dir
-      require("nvchad.term").new { cmd = cmd, pos = "sp" }
+
+      -- base46_cache var is an indicator of nvui user!
+      if vim.g.base46_cache then
+        require("nvchad.term").new { cmd = cmd, pos = "sp" }
+      else
+        vim.cmd "enew"
+        vim.fn.termopen { vim.o.shell, "-c", cmd .. " ; " .. vim.o.shell }
+      end
     end,
   },
 
   { name = "separator" },
 
   {
-    name='  Color Picker',
+    name = "  Color Picker",
     cmd = function()
       require("minty.huefy").open()
-    end
-  }
+    end,
+  },
 }
