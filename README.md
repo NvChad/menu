@@ -9,8 +9,8 @@ Menu ui for neovim ( supports nested menus )
 ```
 
 ## Usage
+- options is a table or string, if string then it will look at the table from menus* module of this repo
 ```lua
--- options is a table or string, if string then it will look at the table from menus* module of this repo
 require("menu").open(options, opts) 
 ```
 - opts : { mouse = true, border = false }
