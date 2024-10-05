@@ -37,8 +37,6 @@ M.open = function(items, opts)
   bufv.w = require("menu.utils").get_width(items)
   bufv.w = bufv.w + bufv.item_gap
 
-  vim.bo[buf].filetype = "NvMenu"
-
   local win_opts = {
     relative = config.mouse and "mouse" or "cursor",
     width = bufv.w,
@@ -47,7 +45,7 @@ M.open = function(items, opts)
     col = 0,
     border = "single",
     style = "minimal",
-    zindex = 100
+    zindex = 100,
   }
 
   if opts.nested then
@@ -80,6 +78,8 @@ M.open = function(items, opts)
   end
 
   volt.run(buf, { h = h, w = bufv.w })
+  vim.bo[buf].filetype = "NvMenu"
+
   volt_events.add(buf)
 
   local close_post = function()
