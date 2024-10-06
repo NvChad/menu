@@ -19,7 +19,12 @@ https://github.com/user-attachments/assets/89d96170-e039-4d3d-9640-0fdc3358a833
 require("menu").open(options, opts) 
 ```
 - options is a table or string, if string then it will look at the table from menus* module of this repo
-- opts : { mouse = true, border = false }
+- opts : { mouse = true, border = false }"
+
+### For keyboard users
+- Use `h` `l` to move between windows 
+- Use `q` to close the window
+- Press the keybind defined for menu item or scroll to it and press enter, to execute it
 
 ### Examples
 
