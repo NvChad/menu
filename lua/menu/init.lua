@@ -85,7 +85,10 @@ M.open = function(items, opts)
   local close_post = function()
     state.bufs = {}
     state.config = nil
-    api.nvim_win_set_cursor(state.old_data.win, state.old_data.cursor)
+
+    if api.nvim_win_is_valid(state.old_data.win) then
+      api.nvim_win_set_cursor(state.old_data.win, state.old_data.cursor)
+    end
 
     vim.schedule(function()
       state.bufids = {}
