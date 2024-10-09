@@ -8,6 +8,12 @@ local volt_events = require "volt.events"
 local mappings = require "menu.mappings"
 
 M.open = function(items, opts)
+  opts = opts or {}
+
+  if #state.bufids > 0 and not opts.nested then
+    return
+  end
+
   local cur_buf = api.nvim_get_current_buf()
 
   if vim.bo[cur_buf].ft ~= "NvMenu" then
@@ -19,8 +25,6 @@ M.open = function(items, opts)
   end
 
   items = type(items) == "table" and items or require("menus." .. items)
-
-  opts = opts or {}
 
   if not state.config then
     state.config = opts
