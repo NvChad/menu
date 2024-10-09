@@ -45,7 +45,7 @@ M.open = function(items, opts)
     col = 0,
     border = "single",
     style = "minimal",
-    zindex = 100,
+    zindex = 99 + #state.bufids,
   }
 
   if opts.nested then
