@@ -10,8 +10,12 @@ local mappings = require "menu.mappings"
 M.open = function(items, opts)
   opts = opts or {}
 
-  if #state.bufids > 0 and not opts.nested then
-    return
+  -- Close before opening another instance.
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    if vim.bo[buf].ft == "NvMenu" then
+      vim.api.nvim_win_close(win, true)
+    end
   end
 
   local cur_buf = api.nvim_get_current_buf()
