@@ -10,10 +10,6 @@ local mappings = require "menu.mappings"
 M.open = function(items, opts)
   opts = opts or {}
 
-  if #state.bufids > 0 and not opts.nested then
-    return
-  end
-
   local cur_buf = api.nvim_get_current_buf()
 
   if vim.bo[cur_buf].ft ~= "NvMenu" then
