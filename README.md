@@ -46,13 +46,11 @@ end, {})
 
 Check example of [defaults menu](https://github.com/NvChad/menu/blob/main/lua/menus/default.lua) to see know syntax of options table.
 
-### Why?
+## :gift_heart: Support
 
-I know a lot of you all would be infuriated by this plugin. here are some reasons for me to use it:
+If you like NvChad or its plugins and would like to support it via donation
 
-- There are times when i'd want to perform some action but i dont want to set command/mapping for it, like one of those gitsigns commands, they're very useful and so many commands but i rarely use them. So a menu option with quick mouse click 
-or menu opened from keybind would suffice!
-
-- I already got so many keybinds, I dont want to add more if I dont use it too frequently so I could use this menu!
-
-- I use my pc for more than 10 hours a day ( including, for the remote job I got ) and my keyboard usage is very high cuz of Vim so at times my fingers hurt and using mouse would tone it down.
+[![kofi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/siduck)
+[![paypal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/siduck13)
+[![buymeacoffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/siduck)
+[![patreon](https://img.shields.io/badge/Patreon-F96854?style=for-the-badge&logo=patreon&logoColor=white)](https://www.patreon.com/siduck)
