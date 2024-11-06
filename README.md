@@ -10,8 +10,8 @@ https://github.com/user-attachments/assets/89d96170-e039-4d3d-9640-0fdc3358a833
 ## Install
 
 ```lua
-{ "siduck/volt" , lazy = true },
-{ "siduck/menu" , lazy = true },
+{ "nvzone/volt" , lazy = true },
+{ "nvzone/menu" , lazy = true },
 ```
 
 ## Usage
