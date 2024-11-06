@@ -10,8 +10,8 @@ https://github.com/user-attachments/assets/89d96170-e039-4d3d-9640-0fdc3358a833
 ## Install
 
 ```lua
-{ "nvchad/volt" , lazy = true },
-{ "nvchad/menu" , lazy = true },
+{ "siduck/volt" , lazy = true },
+{ "siduck/menu" , lazy = true },
 ```
 
 ## Usage
